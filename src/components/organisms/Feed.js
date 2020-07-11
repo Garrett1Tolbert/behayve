@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { MainContext } from '../../context/MainContext';
 
 const Feed = () => {
-	return <div>Feed</div>;
+	const { issues, addIssue } = useContext(MainContext);
+	return (
+		<>
+			<div>There are {issues.length} issues</div>
+			<button onClick={addIssue}>Add new issue</button>
+		</>
+	);
 };
 
 export default Feed;
