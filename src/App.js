@@ -1,9 +1,8 @@
 import React from 'react';
-import firebase from './config';
+import db from './config';
 
 function App() {
-	console.log(firebase);
-
+  
 	return <div className='App'>hi</div>;
 }
 
