@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
+import { MainContext } from '../../context/MainContext';
 
 const Container = styled.div`
 	padding: 16px;
@@ -28,10 +29,11 @@ const CTA = styled.div`
 `;
 
 const Header = () => {
+	const { toggleSidebar } = useContext(MainContext);
 	return (
 		<Container>
 			<Brand>Behayve</Brand>
-			<CTA>Add New Issue</CTA>
+			<CTA onClick={toggleSidebar}>Add New Issue</CTA>
 		</Container>
 	);
 };

@@ -4,11 +4,8 @@ import Issue from '../atoms/Issue';
 import AddIssue from '../molecules/AddIssue';
 import styled from '@emotion/styled';
 import Header from '../molecules/Header';
+import Toolbar from '../molecules/Toolbar';
 
-const Wrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
 const Grid = styled.div`
 	padding: 36px;
 	display: grid;
@@ -17,33 +14,21 @@ const Grid = styled.div`
 `;
 
 const Feed = () => {
-	const { issues, addIssue, fetchInitialData } = useContext(MainContext);
+	const { issues, fetchInitialData } = useContext(MainContext);
 
 	useEffect(() => fetchInitialData(), []);
 
 	return (
-		<Wrapper>
+		<>
 			<Header />
-			{/* <button
-				onClick={() =>
-					addIssue(
-						'John Smith',
-						'Low',
-						'he was late',
-						`300${Math.round(Math.random() * 10000)}`
-					)
-				}
-			>
-				Add new issue
-			</button> */}
+			<Toolbar />
 			<Grid>
-				<Issue />
-				<Issue />
-				<Issue />
-				<Issue />
+				{issues.map((item, idx) => (
+					<Issue key={idx} data={item} />
+				))}
 			</Grid>
-			{/* <AddIssue /> */}
-		</Wrapper>
+			<AddIssue />
+		</>
 	);
 };
 

@@ -7,18 +7,26 @@ const Container = styled.div`
 	display: inline-block;
 	width: auto;
 	height: auto;
-	// box-shadow: 0 3px 5px rgba(200, 200, 200, 0.35);
 	border-radius: 8px;
 	padding: 16px;
 	position: relative;
 	z-index: 1;
 	border: 1px solid #c8c8c8;
+	transition: all 0.3s;
+	:hover {
+		border: 1px solid #fff;
+		box-shadow: 0 3px 5px rgba(200, 200, 200, 0.75);
+	}
 `;
 const Name = styled.div`
 	font-size: 20px;
 	font-weight: 400;
 	color: #777;
 	margin-bottom: 16px;
+	cursor: pointer;
+	:hover {
+		text-decoration: underline;
+	}
 `;
 const Creator = styled.div`
 	font-size: 20px;
@@ -56,33 +64,41 @@ const Label = styled.p`
 	font-size: 16px;
 `;
 
-const Issue = () => {
+const Issue = ({ data: { student, priority, description, creator } }) => {
 	const getColor = (priority) => {
-		return priority === 'low'
-			? '#525456'
-			: priority === 'medium'
+		return priority === 'Low'
+			? '#424242'
+			: priority === 'Medium'
 			? '#F57C00'
-			: '#D32F2F';
+			: priority === 'High'
+			? '#D32F2F'
+			: '#1976D2';
 	};
 	const getBG = (priority) => {
-		return priority === 'low'
-			? '#FFF9C4'
-			: priority === 'medium'
+		return priority === 'Low'
+			? '#F5F5F5'
+			: priority === 'Medium'
 			? '#FFF3E0'
-			: '#FFEBEE';
+			: priority === 'High'
+			? '#FFEBEE'
+			: '#E3F2FD';
 	};
 
 	return (
 		<Container>
-			<Name>Joshua Smith</Name>
-			<Description>He was late to class today</Description>
+			<Name>{student}</Name>
+			<Description>{description}</Description>
 			<Footer>
-				<Creator>Allison Monét</Creator>
-				<Priority bg={getBG('low')}>
-					<Icon color={getColor('low')} className='material-icons'>
-						error_outline
+				<Creator>{creator}</Creator>
+				<Priority bg={getBG(priority)}>
+					<Icon color={getColor(priority)} className='material-icons'>
+						{priority === 'resolved' ? 'check' : 'error_outline'}
 					</Icon>
-					<Label color={getColor('low')}>Low Priority</Label>
+					<Label color={getColor(priority)}>
+						{priority === 'Resolved'
+							? 'Resolved'
+							: `${priority} Priority`}
+					</Label>
 				</Priority>
 			</Footer>
 		</Container>

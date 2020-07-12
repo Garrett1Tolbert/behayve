@@ -4,6 +4,11 @@ export default (state, action) => {
 			return {
 				issues: [...state.issues, action.payload],
 			};
+		case 'TOGGLE_SIDEBAR':
+			return {
+				...state,
+				showSidebar: action.payload,
+			};
 		default:
 			return state;
 	}

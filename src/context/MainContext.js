@@ -4,6 +4,7 @@ import firebase, { db } from '../config';
 
 const initialState = {
 	issues: [],
+	showSidebar: false,
 };
 export const MainContext = createContext(initialState);
 
@@ -24,21 +25,30 @@ const MainContextProvider = ({ children }) => {
 			});
 	};
 
-	const addIssue = async (creator, priority, description, studentID) => {
+	const toggleSidebar = () => {
+		console.log(state);
+		dispatch({
+			type: 'TOGGLE_SIDEBAR',
+			payload: !state.showSidebar,
+		});
+	};
+
+	const addIssue = async (creator, student, priority, description) => {
+		const data = {
+			creator,
+			priority,
+			description,
+			student,
+			createdAt: firebase.firestore.Timestamp.now(),
+		};
 		await db
 			.collection('issues')
-			.add({
-				creator,
-				priority,
-				description,
-				student: `students/${studentID}`,
-				createdAt: firebase.firestore.Timestamp.now(),
-			})
+			.add(data)
 			.then(function (docRef) {
 				console.log('Document written with ID: ', docRef.id);
 				dispatch({
 					type: 'ADD_ISSUE',
-					payload: docRef.id,
+					payload: data,
 				});
 			})
 			.catch(function (error) {
@@ -48,7 +58,13 @@ const MainContextProvider = ({ children }) => {
 
 	return (
 		<MainContext.Provider
-			value={{ issues: state.issues, addIssue, fetchInitialData }}
+			value={{
+				issues: state.issues,
+				showSidebar: state.showSidebar,
+				addIssue,
+				fetchInitialData,
+				toggleSidebar,
+			}}
 		>
 			{children}
 		</MainContext.Provider>

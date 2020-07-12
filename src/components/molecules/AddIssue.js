@@ -6,19 +6,21 @@ const Container = styled.div`
 	width: 300px;
 	height: 100vh;
 	background: #fff;
-	box-shadow: 0 3px 5px #525456;
+	box-shadow: 0 3px 5px #c8c8c8;
 	border-radius: 8px 0 0 8px;
 	padding: 24px;
+	transition: all 0.3s;
 	position: absolute;
 	top: 0;
 	z-index: 10;
-	right: 0;
+	right: ${({ show }) => (show ? 0 : '-100%')};
 `;
 
 const Title = styled.div`
 	font-size: 32px;
 	font-weight: 700;
 	color: #525456;
+	margin-top: 64px;
 	margin-bottom: 16px;
 `;
 
@@ -60,24 +62,40 @@ const Dropdown = styled.select`
 	padding: 12 px;
 	width: 200px;
 `;
+const Icon = styled.i`
+	font-size: 24px;
+	color: #525456;
+	position: absolute;
+	margin-right: 8px;
+	top: 8px;
+	cursor: pointer;
+	left: 8px;
+`;
 
 const AddIssue = () => {
 	const [name, setName] = useState('');
+	const [creator, setCreator] = useState('');
 	const [priority, setPriority] = useState('');
 	const [description, setDescription] = useState('');
-	const {addIssue} = useContext(MainContext);
+	const { addIssue, showSidebar, toggleSidebar } = useContext(MainContext);
 
 	const handleClick = () => {
-		addIssue(
-			name,
-			priority,
-			description,
-			`300${Math.round(Math.random() * 10000)}`
-		)
+		addIssue(creator, name, priority, description);
+		toggleSidebar();
 	};
 	return (
-		<Container>
+		<Container show={showSidebar}>
+			<Icon onClick={toggleSidebar} className='material-icons'>
+				close
+			</Icon>
 			<Title>New Issue</Title>
+			<InputContainer>
+				<Label>Your Name</Label>
+				<Input
+					placeholder={`Your Name`}
+					onChange={(e) => setCreator(e.target.value)}
+				/>
+			</InputContainer>
 			<InputContainer>
 				<Label>Student's Name</Label>
 				<Input
@@ -86,11 +104,11 @@ const AddIssue = () => {
 				/>
 			</InputContainer>
 			<InputContainer>
-				<Dropdown onChange={(e) => setPriority(e.target.value)}>	
+				<Dropdown onChange={(e) => setPriority(e.target.value)}>
 					<option>Select priority:</option>
-					<option value="High">High</option>	
-					<option value="Medium">Medium</option>
-					<option value="Low">Low</option>
+					<option value='High'>High</option>
+					<option value='Medium'>Medium</option>
+					<option value='Low'>Low</option>
 				</Dropdown>
 			</InputContainer>
 			<InputContainer>
@@ -99,7 +117,7 @@ const AddIssue = () => {
 					placeholder={`Description`}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
-			</InputContainer>	
+			</InputContainer>
 			<CTA onClick={handleClick}>Add Issue</CTA>
 		</Container>
 	);
