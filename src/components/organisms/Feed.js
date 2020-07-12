@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { MainContext } from '../../context/MainContext';
+import Issue from '../atoms/Issue';
+import AddIssue from '../molecules/AddIssue';
 
 const Feed = () => {
 	const { issues, addIssue, fetchInitialData } = useContext(MainContext);
@@ -21,6 +23,8 @@ const Feed = () => {
 			>
 				Add new issue
 			</button>
+			<Issue />
+			<AddIssue />
 		</>
 	);
 };
