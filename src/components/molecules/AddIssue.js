@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from '@emotion/styled';
+import { MainContext } from '../../context/MainContext';
 
 const Container = styled.div`
 	width: 300px;
@@ -54,11 +55,25 @@ const CTA = styled.div`
 	cursor: pointer;
 `;
 
+const Dropdown = styled.select`
+	margin-top: 12 px;
+	padding: 12 px;
+	width: 200px;
+`;
+
 const AddIssue = () => {
 	const [name, setName] = useState('');
+	const [priority, setPriority] = useState('');
+	const [description, setDescription] = useState('');
+	const {addIssue} = useContext(MainContext);
 
 	const handleClick = () => {
-		alert(`adding ${name}`);
+		addIssue(
+			name,
+			priority,
+			description,
+			`300${Math.round(Math.random() * 10000)}`
+		)
 	};
 	return (
 		<Container>
@@ -70,6 +85,21 @@ const AddIssue = () => {
 					onChange={(e) => setName(e.target.value)}
 				/>
 			</InputContainer>
+			<InputContainer>
+				<Dropdown onChange={(e) => setPriority(e.target.value)}>	
+					<option>Select priority:</option>
+					<option value="High">High</option>	
+					<option value="Medium">Medium</option>
+					<option value="Low">Low</option>
+				</Dropdown>
+			</InputContainer>
+			<InputContainer>
+				<Label>Description</Label>
+				<Input
+					placeholder={`Description`}
+					onChange={(e) => setDescription(e.target.value)}
+				/>
+			</InputContainer>	
 			<CTA onClick={handleClick}>Add Issue</CTA>
 		</Container>
 	);
